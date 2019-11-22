@@ -1,0 +1,41 @@
+<h2>Search: </h2>
+
+<textarea [(ngModel)]="search_field"></textarea>
+<br>
+<button (click)="search()">Submit</button>
+
+
+<h2>Search result: </h2>
+<ul *ngFor="let product of search_result">
+
+  <li>
+      {{ product }}
+  </li>
+
+</ul>
+
+
+<h2>Comments: </h2>
+<ul>
+  <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: list }"></ng-container>
+</ul>
+
+<ng-template #recursiveListTmpl let-list>
+  <li *ngFor="let item of list">
+    <div>
+     {{ item.title }}
+      </div>
+    <textarea [(ngModel)]="item.data"></textarea>
+  <br>
+
+  <button (click)="add_comment(item.id, item.data)">Reply</button>
+    <ul *ngIf="item.children.length > 0">
+      <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item.children }"></ng-container>
+    </ul>
+  </li>
+</ng-template>
+
+<textarea [(ngModel)]="comment"></textarea>
+  <br>
+
+  <button (click)="add_new_comment()">Submit</button>
